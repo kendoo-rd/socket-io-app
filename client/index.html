@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+</head>
+<body>
+    <h1>Hello Socket.io</h1>
+
+    <div>
+        <label for="username">Enter your username or stay anonymous</label> <br>
+        <input type="text" id="username">
+        <button id="btnJoin">Join</button>
+    </div>
+
+    <hr>
+
+    <button id="btn1">Send to Everyone including me</button>
+    <button id="btn2">Send only to others</button>
+    <button id="btn3">Send me a nice quote</button>
+    <button id="btn4">Send an array [1,2,3]</button>
+    <button id="btn5">Send an object (Product)</button>
+    <script>
+
+        let socket = io('http://localhost:3000');
+
+        //  Respond to server events
+        socket.on('message', message => {
+            console.log( message );
+        })
+
+        socket.on('newObject', data => {
+
+            console.log( data );
+        })
+
+        //  DOM
+        let btn1 = document.getElementById('btn1');
+        let btn2 = document.getElementById('btn2');
+        let btn3 = document.getElementById('btn3');
+        let btn4 = document.getElementById('btn4');
+        let btn5 = document.getElementById('btn5');
+        let btnJoin = document.getElementById('btnJoin');
+        let username = document.getElementById('username');
+
+        //  Attach Event Listeners
+        btn1.addEventListener('click', () => {
+
+            socket.emit('messageToEveryone', 'A message to all');
+        });
+
+        btn2.addEventListener('click', () => {
+            
+            socket.emit('messageToOthers', 'Hello people')
+        });
+
+        btn3.addEventListener('click', () => {
+            socket.emit('messageMe')
+        });
+
+        btn4.addEventListener('click', () => {
+
+            let arr = [1,2,3];
+
+            socket.emit('objectFromClient', arr);
+        });
+
+        btn5.addEventListener('click', () => {
+
+            let product = {
+                name: 'Bamba',
+                price: 5
+            }
+
+            socket.emit('objectFromClient', product);
+        });
+
+
+        btnJoin.addEventListener('click', () => {
+            socket.emit('join', username.value );
+        })
+    </script>
+</body>
+</html>

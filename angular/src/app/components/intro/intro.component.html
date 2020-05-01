@@ -1,0 +1,21 @@
+<h2>Messages</h2>
+
+<div>
+  <label for="username">Enter your name</label> <br>
+  <input type="text" id="username" #username (keypress)="onTyping()" >
+  <button (click)="join(username.value)">Join</button>
+</div>
+
+<div style="margin-top: 20px;">
+  <button (click)="sendToEveryone()">Send to Everyone</button>
+  <button (click)="sendToOthers()">Send only to Others</button>
+  <button (click)="send_Me_A_Message()">Send me a quote</button>
+</div>
+
+<ul>
+  <li *ngFor="let message of messages">{{ message }}</li>
+</ul>
+
+<hr style="margin: 10px;">
+
+<span [hidden]="!someIsTyping">{{ whoIsTyping }} is typing...</span>

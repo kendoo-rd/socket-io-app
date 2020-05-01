@@ -21,6 +21,8 @@ io.on('connection', socket => {
         socket.emit('message', 'Another automated message from server');
     }, 3000)
 
+    
+
 
     //  Respond to messages from client
     socket.on('messageToEveryone', data => {
@@ -78,6 +80,17 @@ io.on('connection', socket => {
 
          //  Send to all
         io.emit('newObject', obj);
+    })
+
+
+    socket.on('typing', () => {
+
+      //  Who is sending the message?
+      let somebody = socket.username == undefined ? 'somebody' : socket.username;
+
+      console.log(`${somebody} is typing...`);
+
+      socket.broadcast.emit('typing', somebody );
     })
 
 })
